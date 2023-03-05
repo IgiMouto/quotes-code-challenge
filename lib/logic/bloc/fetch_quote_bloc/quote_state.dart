@@ -1,10 +1,10 @@
 part of 'quote_bloc.dart';
 
 class QuoteState extends Equatable {
-  const QuoteState({this.dynamicQuote, this.staticQuote});
+  const QuoteState({required this.dynamicQuote, required this.staticQuote});
 
-  final List<Quote>? staticQuote;
-  final List<Quote>? dynamicQuote;
+  final List<Quote> staticQuote;
+  final List<Quote> dynamicQuote;
 
   QuoteState copywith({List<Quote>? staticQuote, List<Quote>? dynamicQuote}) {
     return QuoteState(
@@ -18,5 +18,5 @@ class QuoteState extends Equatable {
 
 class QuoteLoadedState extends QuoteState {
   QuoteLoadedState({required QuoteState state})
-      : super(staticQuote: state.staticQuote);
+      : super(staticQuote: state.staticQuote, dynamicQuote: state.dynamicQuote);
 }

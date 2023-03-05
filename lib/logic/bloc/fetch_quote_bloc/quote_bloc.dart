@@ -9,7 +9,8 @@ part 'quote_event.dart';
 part 'quote_state.dart';
 
 class QuoteBloc extends Bloc<QuoteEvent, QuoteState> {
-  QuoteBloc(this.quoteRepository) : super(const QuoteState()) {
+  QuoteBloc(this.quoteRepository)
+      : super(const QuoteState(dynamicQuote: [], staticQuote: [])) {
     on<QuoteFetching>(_onQuoteFetching);
     on<QuoteDeleting>(_onQuoteDeleting);
   }
@@ -19,14 +20,7 @@ class QuoteBloc extends Bloc<QuoteEvent, QuoteState> {
       QuoteFetching event, Emitter<QuoteState> emit) async {
     try {
       final quoteFetchingResponse = await quoteRepository.fetchQuotes();
-
-      emit(
-        QuoteLoadedState(
-          state: state.copywith(
-              staticQuote: quoteFetchingResponse,
-              dynamicQuote: quoteFetchingResponse),
-        ),
-      );
+      emit(state.copywith(staticQuote: quoteFetchingResponse));
     } catch (e) {
       throw Exception(e);
     }
@@ -35,9 +29,10 @@ class QuoteBloc extends Bloc<QuoteEvent, QuoteState> {
   FutureOr<void> _onQuoteDeleting(
       QuoteDeleting event, Emitter<QuoteState> emit) async {
     try {
-      List<Quote>? currentQuote = state.staticQuote;
-      currentQuote?.remove(event.quote);
-      emit(state.copywith(staticQuote: currentQuote));
+      final currentQuote = state.staticQuote.toList();
+      currentQuote.remove(event.quote);
+
+      emit(QuoteLoadedState(state: state.copywith(staticQuote: currentQuote)));
     } catch (e) {
       throw Exception(e);
     }
