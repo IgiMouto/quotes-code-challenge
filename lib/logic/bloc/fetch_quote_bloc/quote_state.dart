@@ -1,24 +1,22 @@
 part of 'quote_bloc.dart';
 
-abstract class QuoteState extends Equatable {
-  const QuoteState();
+class QuoteState extends Equatable {
+  const QuoteState({this.dynamicQuote, this.staticQuote});
+
+  final List<Quote>? staticQuote;
+  final List<Quote>? dynamicQuote;
+
+  QuoteState copywith({List<Quote>? staticQuote, List<Quote>? dynamicQuote}) {
+    return QuoteState(
+        staticQuote: staticQuote ?? this.staticQuote,
+        dynamicQuote: dynamicQuote ?? this.dynamicQuote);
+  }
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [staticQuote, dynamicQuote];
 }
-
-class QuoteInitial extends QuoteState {}
-
-class QuoteLoadingState extends QuoteState {}
 
 class QuoteLoadedState extends QuoteState {
-  final Quote quote;
-
-  const QuoteLoadedState({required this.quote});
-}
-
-class QuoteLoadingFailedState extends QuoteState {
-  final String? message;
-
-  const QuoteLoadingFailedState(this.message);
+  QuoteLoadedState({required QuoteState state})
+      : super(staticQuote: state.staticQuote);
 }

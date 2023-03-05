@@ -8,3 +8,8 @@ abstract class QuoteEvent extends Equatable {
 }
 
 class QuoteFetching extends QuoteEvent {}
+
+class QuoteDeleting extends QuoteEvent {
+  final Quote quote;
+  const QuoteDeleting({required this.quote});
+}
