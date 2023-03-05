@@ -26,22 +26,19 @@ class HomePage extends StatelessWidget {
           children: [
             BlocBuilder<QuoteBloc, QuoteState>(
               builder: (context, state) {
-                if (state is QuoteLoadingState) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                if (state is QuoteLoadedState) {
+                if (state.staticQuote != null) {
                   return Expanded(
                     child: ListView.builder(
-                      itemCount: 10,
+                      itemCount: state.staticQuote?.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const QuotePage(),
+                                builder: (context) => QuotePage(
+                                  quote: state.staticQuote![index],
+                                ),
                               ),
                             );
                           },
@@ -55,7 +52,7 @@ class HomePage extends StatelessWidget {
                                 children: [
                                   Flexible(
                                     child: Text(
-                                      state.quote.results[index].author,
+                                      state.staticQuote![index].author,
                                       style: const TextStyle(
                                           fontSize: 30,
                                           fontWeight: FontWeight.bold),
@@ -63,7 +60,7 @@ class HomePage extends StatelessWidget {
                                   ),
                                   Flexible(
                                     child: Text(
-                                      state.quote.results[index].content,
+                                      state.staticQuote![index].content,
                                       style: const TextStyle(
                                           color: Colors.blue,
                                           fontSize: 20,
