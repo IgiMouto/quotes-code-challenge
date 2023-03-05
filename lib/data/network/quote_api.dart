@@ -1,5 +1,4 @@
 import 'package:http/http.dart' as http;
-import 'package:quotes_code_challenge/data/models/quote_model.dart';
 
 class QuoteApi {
   Future<http.Response> fetchQuotes() async {
