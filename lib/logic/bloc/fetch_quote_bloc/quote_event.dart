@@ -20,9 +20,3 @@ class QuoteUpdating extends QuoteEvent {
 
   const QuoteUpdating({required this.quote, required this.newContent});
 }
-
-class QuoteOnChanged extends QuoteEvent {
-  final String content;
-
-  QuoteOnChanged(this.content);
-}

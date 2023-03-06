@@ -14,7 +14,6 @@ class QuoteBloc extends Bloc<QuoteEvent, QuoteState> {
     on<QuoteFetching>(_onQuoteFetching);
     on<QuoteDeleting>(_onQuoteDeleting);
     on<QuoteUpdating>(_onQuoteUpdating);
-    on<QuoteOnChanged>(_onQuoteOnChanged);
   }
   final QuoteRepository quoteRepository;
 
@@ -55,10 +54,5 @@ class QuoteBloc extends Bloc<QuoteEvent, QuoteState> {
     } catch (e) {
       throw Exception(e);
     }
-  }
-
-  FutureOr<void> _onQuoteOnChanged(
-      QuoteOnChanged event, Emitter<QuoteState> emit) {
-    final currentContent = event.content;
   }
 }
