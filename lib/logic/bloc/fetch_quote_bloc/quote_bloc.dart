@@ -13,6 +13,8 @@ class QuoteBloc extends Bloc<QuoteEvent, QuoteState> {
       : super(const QuoteState(dynamicQuote: [], staticQuote: [])) {
     on<QuoteFetching>(_onQuoteFetching);
     on<QuoteDeleting>(_onQuoteDeleting);
+    on<QuoteUpdating>(_onQuoteUpdating);
+    on<QuoteOnChanged>(_onQuoteOnChanged);
   }
   final QuoteRepository quoteRepository;
 
@@ -29,12 +31,34 @@ class QuoteBloc extends Bloc<QuoteEvent, QuoteState> {
   FutureOr<void> _onQuoteDeleting(
       QuoteDeleting event, Emitter<QuoteState> emit) async {
     try {
-      final currentQuote = state.staticQuote.toList();
-      currentQuote.remove(event.quote);
+      final currentQuote = state.staticQuote?.toList();
+      currentQuote?.remove(event.quote);
 
       emit(QuoteLoadedState(state: state.copywith(staticQuote: currentQuote)));
     } catch (e) {
       throw Exception(e);
     }
+  }
+
+  FutureOr<void> _onQuoteUpdating(
+      QuoteUpdating event, Emitter<QuoteState> emit) {
+    try {
+      final currentQuote = state.staticQuote!.toList();
+      for (var element in currentQuote) {
+        if (element.id == event.quote.id) {
+          element.content = event.newContent;
+        }
+      }
+      emit(QuoteInitial());
+      emit(QuoteUpdatedState(
+          dynamicQuote: currentQuote, staticQuote: currentQuote));
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  FutureOr<void> _onQuoteOnChanged(
+      QuoteOnChanged event, Emitter<QuoteState> emit) {
+    final currentContent = event.content;
   }
 }

@@ -13,3 +13,16 @@ class QuoteDeleting extends QuoteEvent {
   final Quote quote;
   const QuoteDeleting({required this.quote});
 }
+
+class QuoteUpdating extends QuoteEvent {
+  final Quote quote;
+  final String newContent;
+
+  const QuoteUpdating({required this.quote, required this.newContent});
+}
+
+class QuoteOnChanged extends QuoteEvent {
+  final String content;
+
+  QuoteOnChanged(this.content);
+}
